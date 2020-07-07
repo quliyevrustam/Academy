@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    php-xdebug:
+        build: ./php/dev
+        environment:
+          XDEBUG_REMOTE_HOST: ${XDEBUG_REMOTE_HOST}
+        depends_on:
+            - php
+        volumes:
+            - bulbulatory/:/var/www/bulbulatory/:nocopy,delegated
+            - ./php/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./php/conf.d/defaults.ini:/usr/local/etc/php/conf.d/defaults.ini
+            - ./php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        networks:
+            - bulbulatory_network

@@ -1,0 +1,81 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:1.17.0-alpine
+        ports:
+            - '80:80'
+        volumes:
+            - bulbulatory/:/var/www/bulbulatory/:nocopy,delegated
+            - ./nginx/servers/bulbulatory.conf:/etc/nginx/conf.d/bulbulatory.conf
+        networks:
+            - bulbulatory_network
+
+    php:
+        build: ./php
+        image: bulbulatory:1.0.0
+        volumes:
+            - bulbulatory/:/var/www/bulbulatory/:nocopy,delegated
+            - ./php/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./php/conf.d/defaults.ini:/usr/local/etc/php/conf.d/defaults.ini
+        networks:
+            - bulbulatory_network
+
+    mysql:
+        image: mysql:5.7.26
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - bulbulatory_mysql/:/var/lib/mysql
+        networks:
+            - bulbulatory_network
+
+    elasticsearch:
+        image: elasticsearch:6.8.2
+        environment:
+            - discovery.type=single-node
+            - bootstrap.memory_lock=true
+            - cluster.routing.allocation.disk.threshold_enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        volumes:
+            - bulbulatory_elasticsearch/:/usr/share/elasticsearch/data
+        ports:
+            - '9200:9200'
+        networks:
+            - bulbulatory_network
+
+    redis:
+        image: redis:5.0.5-alpine
+        ports:
+            - '6379:6379'
+        networks:
+            - bulbulatory_network
+
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - '1025:1025'
+            - '8025:8025'
+        networks:
+            - bulbulatory_network
+
+volumes:
+    bulbulatory:
+        external:
+            name: bulbulatory
+    bulbulatory_mysql:
+        external:
+            name: bulbulatory_mysql
+    bulbulatory_elasticsearch:
+        external:
+            name: bulbulatory_elasticsearch
+
+networks:
+    bulbulatory_network:
+        driver: bridge
