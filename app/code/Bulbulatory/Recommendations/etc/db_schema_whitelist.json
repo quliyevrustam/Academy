@@ -1,0 +1,21 @@
+{
+    "bulbulatory_recommendations": {
+        "column": {
+            "id": true,
+            "reference": true,
+            "email": true,
+            "hash": true,
+            "state": true,
+            "created_at": true,
+            "confirmation_at": true,
+            "created_time": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BULBULATORY_RECOMMENDATIONS_HASH": true
+        },
+        "index": {
+            "BULBULATORY_RECOMMENDATIONS_HASH": true
+        }
+    }
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="bulbulatory_recommendations" resource="default" engine="innodb" comment="Bulbulatory Recommendations">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Affiliate link ID"/>
+        <column xsi:type="text" name="reference" comment="Customer Reference"/>
+        <column xsi:type="varchar" name="email" length="128" unsigned="false" nullable="false" comment="Email address, where the link was sent"/>
+        <column xsi:type="varchar" name="hash" length="255" unsigned="false" nullable="false" comment="Hash will be used in the affiliate links"/>
+        <column xsi:type="smallint" name="state" padding="1" default="1" unsigned="false" nullable="false" comment="1 - confirmed / 0 - unconfirmed"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" comment="Hash will be used in the affiliate links"/>
+        <column xsi:type="datetime" name="confirmation_at" unsigned="false" nullable="true" comment="Hash will be used in the affiliate links"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="UNIQUE">
+            <column name="hash"/>
+        </constraint>
+    </table>
+</schema>
