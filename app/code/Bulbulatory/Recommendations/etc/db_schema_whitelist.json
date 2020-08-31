@@ -8,11 +8,13 @@
             "state": true,
             "created_at": true,
             "confirmation_at": true,
-            "created_time": true
+            "created_time": true,
+            "customer_id": true
         },
         "constraint": {
             "PRIMARY": true,
-            "BULBULATORY_RECOMMENDATIONS_HASH": true
+            "BULBULATORY_RECOMMENDATIONS_HASH": true,
+            "BULBULATORY_RECOMMENDATIONS_CSTR_ID_CSTR_ENTT_ENTT_ID": true
         },
         "index": {
             "BULBULATORY_RECOMMENDATIONS_HASH": true
