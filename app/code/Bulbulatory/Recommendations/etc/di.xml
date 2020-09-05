@@ -1,0 +1,19 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="bulbulatory_recommendations_table_listing_data_source"
+                      xsi:type="string">Bulbulatory\Recommendations\Model\ResourceModel\Table\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Bulbulatory\Recommendations\Model\ResourceModel\Table\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">bulbulatory_recommendations</argument>
+            <argument name="resourceModel"
+                      xsi:type="string">Bulbulatory\Recommendations\Model\ResourceModel\Table</argument>
+        </arguments>
+    </virtualType>
+</config>
