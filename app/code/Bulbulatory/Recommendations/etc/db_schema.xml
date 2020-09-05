@@ -7,7 +7,8 @@
         <column xsi:type="varchar" name="email" length="128" unsigned="false" nullable="false" comment="Email address, where the affiliate link was sent"/>
         <column xsi:type="varchar" name="hash" length="255" unsigned="false" nullable="false" comment="Hash will be used in the affiliate links"/>
         <column xsi:type="smallint" name="state" padding="1" default="0" unsigned="false" nullable="false" comment="1 - confirmed / 0 - unconfirmed"/>
-        <column xsi:type="timestamp" name="created_at" nullable="false" comment="Affiliate link Create Date"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Affiliate link Create Date"/>
+        <column xsi:type="timestamp" name="modified_at" on_update="true" nullable="false" comment="Last Modify Date"/>
         <column xsi:type="datetime" name="confirmation_at" unsigned="false" nullable="true" comment="Affiliate link Confirmation Date"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id"/>
