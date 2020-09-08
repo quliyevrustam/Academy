@@ -2,7 +2,10 @@
 
 namespace Bulbulatory\Recommendations\Model\ResourceModel\Table;
 
-class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+use Bulbulatory\Recommendations\Model\Table;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+
+class Collection extends AbstractCollection
 {
     protected $_idFieldName = 'id';
     protected $_eventPrefix = 'bulbulatory_recommendations_table_collection';
@@ -10,6 +13,6 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
 
     protected function _construct()
     {
-        $this->_init('Bulbulatory\Recommendations\Model\Table', 'Bulbulatory\Recommendations\Model\ResourceModel\Table');
+        $this->_init(Table::class, \Bulbulatory\Recommendations\Model\ResourceModel\Table::class);
     }
 }

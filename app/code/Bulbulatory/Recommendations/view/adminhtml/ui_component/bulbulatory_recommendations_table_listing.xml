@@ -6,7 +6,7 @@
         </item>
         <item name="spinner" xsi:type="string">spinner_columns</item>
     </argument>
-    <dataSource name="nameOfDataSource">
+    <dataSource>
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">bulbulatory_recommendations_table_listing_data_source</argument>

@@ -1,22 +1,29 @@
 <?php
+
 namespace Bulbulatory\Recommendations\Controller\Adminhtml\Table;
 
-class Index extends \Magento\Backend\App\Action
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
+class Index extends Action
 {
     protected $resultPageFactory = false;
 
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory)
+        Context $context,
+        PageFactory $resultPageFactory)
     {
         parent::__construct($context);
+
         $this->resultPageFactory = $resultPageFactory;
     }
+
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
-        //$resultPage->setActiveMenu('Bulbulatory_Recommendations::bulbulatory_recommendations_table');
-        $resultPage->getConfig()->getTitle()->prepend((__('Table')));
+        $resultPage->getConfig()->getTitle()->prepend((__('Customer Recommendations List')));
+
         return $resultPage;
     }
 }
