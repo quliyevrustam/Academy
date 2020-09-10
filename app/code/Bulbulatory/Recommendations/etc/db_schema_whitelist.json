@@ -9,7 +9,8 @@
             "created_at": true,
             "confirmation_at": true,
             "created_time": true,
-            "customer_id": true
+            "customer_id": true,
+            "modified_at": true
         },
         "constraint": {
             "PRIMARY": true,
