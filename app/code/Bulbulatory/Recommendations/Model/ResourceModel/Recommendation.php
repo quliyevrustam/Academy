@@ -5,7 +5,7 @@ namespace Bulbulatory\Recommendations\Model\ResourceModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 
-class Table extends AbstractDb
+class Recommendation extends AbstractDb
 {
     public function __construct(
         Context $context

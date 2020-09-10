@@ -5,7 +5,7 @@ namespace Bulbulatory\Recommendations\Model;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 
-class Table extends AbstractModel implements IdentityInterface
+class Recommendation extends AbstractModel implements IdentityInterface
 {
     const CACHE_TAG = 'bulbulatory_recommendations_table';
 
@@ -14,7 +14,7 @@ class Table extends AbstractModel implements IdentityInterface
 
     protected function _construct()
     {
-        $this->_init(ResourceModel\Table::class);
+        $this->_init(\Bulbulatory\Recommendations\Model\ResourceModel\Recommendation::class);
     }
 
     public function getIdentities()

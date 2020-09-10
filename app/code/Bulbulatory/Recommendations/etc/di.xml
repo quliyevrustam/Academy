@@ -3,17 +3,17 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="bulbulatory_recommendations_table_listing_data_source"
-                      xsi:type="string">Bulbulatory\Recommendations\Model\ResourceModel\Table\Collection
+                      xsi:type="string">Bulbulatory\Recommendations\Model\ResourceModel\Recommendation\Collection
                 </item>
             </argument>
         </arguments>
     </type>
-    <virtualType name="Bulbulatory\Recommendations\Model\ResourceModel\Table\Collection"
+    <virtualType name="Bulbulatory\Recommendations\Model\ResourceModel\Recommendation\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">bulbulatory_recommendations</argument>
             <argument name="resourceModel"
-                      xsi:type="string">Bulbulatory\Recommendations\Model\ResourceModel\Table</argument>
+                      xsi:type="string">Bulbulatory\Recommendations\Model\ResourceModel\Recommendation</argument>
         </arguments>
     </virtualType>
 </config>
