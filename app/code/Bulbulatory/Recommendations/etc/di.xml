@@ -9,7 +9,7 @@
         </arguments>
     </type>
     <virtualType name="Bulbulatory\Recommendations\Model\ResourceModel\Recommendation\Collection"
-                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+                 type="Bulbulatory\Recommendations\Model\Plugin\ResourceModel\Recommendation\CustomSearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">bulbulatory_recommendations</argument>
             <argument name="resourceModel"
