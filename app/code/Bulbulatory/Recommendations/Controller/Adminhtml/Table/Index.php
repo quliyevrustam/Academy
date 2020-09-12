@@ -19,6 +19,11 @@ class Index extends Action
         $this->resultPageFactory = $resultPageFactory;
     }
 
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Bulbulatory_Recommendations::bulbulatory_recommendations_table');
+    }
+
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
