@@ -26,6 +26,21 @@
     <listingToolbar name="listing_top">
         <paging name="listing_paging"/>
         <filters name="listing_filters"/>
+        <massaction name="listing_massaction">
+            <action name="delete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">delete</item>
+                        <item name="label" xsi:type="string" translate="true">Delete</item>
+                        <item name="url" xsi:type="url" path="bulbulatory_recommendations/table/deletemass"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Delete staffs</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected staffs?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
     </listingToolbar>
     <columns name="spinner_columns">
         <selectionsColumn name="ids">
@@ -45,7 +60,7 @@
                 </item>
             </argument>
         </column>
-        <column name="customer_email" class="Bulbulatory\Recommendations\Ui\Component\Listing\Column\Action">
+        <column name="customer_email" class="Bulbulatory\Recommendations\Ui\Component\Listing\Column\CustomerEmail">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -108,5 +123,12 @@
                 </item>
             </argument>
         </column>
+        <actionsColumn name="delete" class="Bulbulatory\Recommendations\Ui\Component\Listing\Column\Actions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Actions</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>

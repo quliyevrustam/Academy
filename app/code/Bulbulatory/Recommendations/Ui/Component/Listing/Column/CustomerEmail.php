@@ -9,7 +9,7 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Customer\Api\CustomerRepositoryInterface as CustomerRepository;
 
-class Action extends Column
+class CustomerEmail extends Column
 {
     protected $escaper;
 
