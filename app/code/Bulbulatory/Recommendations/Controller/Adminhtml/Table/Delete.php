@@ -2,8 +2,8 @@
 
 namespace Bulbulatory\Recommendations\Controller\Adminhtml\Table;
 
-use Bulbulatory\Recommendations\Model\RecommendationFactory;
 use Magento\Backend\App\Action;
+use Bulbulatory\Recommendations\Model\RecommendationRepository;
 
 /**
  * Class Delete
@@ -12,21 +12,21 @@ use Magento\Backend\App\Action;
 class Delete extends Action
 {
     /**
-     * @var RecommendationFactory
+     * @var RecommendationRepository
      */
-    private $recommendationFactory;
+    protected $recommendationRepository;
 
     /**
      * Delete constructor.
      * @param Action\Context $context
-     * @param RecommendationFactory $recommendationFactory
+     * @param RecommendationRepository $recommendationRepository
      */
     public function __construct(
         Action\Context $context,
-        RecommendationFactory $recommendationFactory
+        RecommendationRepository $recommendationRepository
     )
     {
-        $this->recommendationFactory = $recommendationFactory;
+        $this->recommendationRepository = $recommendationRepository;
 
         parent::__construct($context);
     }
@@ -49,11 +49,11 @@ class Delete extends Action
         if ($id = $this->getRequest()->getParam('id'))
         {
             try {
-                $recommendation = $this->recommendationFactory->create();
-                $recommendation->load($id);
+                $recommendation = $this->recommendationRepository->getById($id);
                 $recommendation->delete();
                 $this->messageManager->addSuccessMessage(__('Recommendation with ID: ' . $id . ' deleted!'));
-            } catch (\Exception $exception) {
+            }
+            catch (\Throwable $exception) {
                 $this->messageManager->addErrorMessage(__('Error in deleting row with ID: ' . $id));
             }
         } else {

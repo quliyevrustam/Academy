@@ -6,7 +6,7 @@ use Bulbulatory\Recommendations\Model\ResourceModel\Recommendation\CollectionFac
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Ui\Component\MassAction\Filter;
-use Bulbulatory\Recommendations\Model\RecommendationFactory;
+use Bulbulatory\Recommendations\Model\RecommendationRepository;
 
 /**
  * Class DeleteMass
@@ -25,27 +25,27 @@ class DeleteMass extends Action
     protected $collectionFactory;
 
     /**
-     * @var RecommendationFactory
+     * @var RecommendationRepository
      */
-    private $recommendationFactory;
+    protected $recommendationRepository;
 
     /**
      * DeleteMass constructor.
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
      * @param Context $context
-     * @param RecommendationFactory $recommendationFactory
+     * @param RecommendationRepository $recommendationRepository
      */
     public function __construct(
         Filter $filter,
         CollectionFactory $collectionFactory,
         Context $context,
-        RecommendationFactory $recommendationFactory
+        RecommendationRepository $recommendationRepository
     )
     {
         $this->filter = $filter;
         $this->collectionFactory = $collectionFactory;
-        $this->recommendationFactory = $recommendationFactory;
+        $this->recommendationRepository = $recommendationRepository;
 
         parent::__construct($context);
     }
@@ -68,14 +68,16 @@ class DeleteMass extends Action
         try {
             $recommendationCollection = $this->filter->getCollection($this->collectionFactory->create());
 
-            foreach ($recommendationCollection as $item) {
+            foreach ($recommendationCollection as $item)
+            {
                 $id = $item->getId();
-                $recommendation = $this->recommendationFactory->create();
-                $recommendation->load($id);
+                $recommendation = $this->recommendationRepository->getById($id);
                 $recommendation->delete();
                 $this->messageManager->addSuccessMessage(__('Recommendation with ID: ' . $id . ' deleted!'));
             }
-        } catch (Exception $e) {
+        }
+        catch (\Throwable $e)
+        {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
 
