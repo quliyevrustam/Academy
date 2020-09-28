@@ -4,9 +4,9 @@ namespace Bulbulatory\Recommendations\Model;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Bulbulatory\Recommendations\Api\Data\RecommendationInterface;
 use Bulbulatory\Recommendations\Api\RecommendationRepositoryInterface;
 use Bulbulatory\Recommendations\Model\ResourceModel\Recommendation\CollectionFactory as RecommendationCollectionFactory;
+use Bulbulatory\Recommendations\Model\Recommendation;
 
 class RecommendationRepository implements RecommendationRepositoryInterface
 {
@@ -38,13 +38,13 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         return $recommendation;
     }
 
-    public function save(RecommendationInterface $recommendation)
+    public function save(Recommendation $recommendation)
     {
         $recommendation->getResource()->save($recommendation);
         return $recommendation;
     }
 
-    public function delete(RecommendationInterface $recommendation)
+    public function delete(Recommendation $recommendation)
     {
         $recommendation->getResource()->delete($recommendation);
     }

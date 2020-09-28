@@ -34,8 +34,8 @@
                         <item name="label" xsi:type="string" translate="true">Delete</item>
                         <item name="url" xsi:type="url" path="bulbulatory_recommendations/table/deletemass"/>
                         <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Delete staffs</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to delete selected staffs?</item>
+                            <item name="title" xsi:type="string" translate="true">Delete Recommendation</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to delete selected recommendation?</item>
                         </item>
                     </item>
                 </argument>
@@ -123,7 +123,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="delete" class="Bulbulatory\Recommendations\Ui\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Bulbulatory\Recommendations\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Actions</item>

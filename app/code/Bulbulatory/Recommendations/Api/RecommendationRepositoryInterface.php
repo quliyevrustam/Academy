@@ -3,26 +3,27 @@
 namespace Bulbulatory\Recommendations\Api;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Bulbulatory\Recommendations\Api\Data\RecommendationInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Bulbulatory\Recommendations\Model\Recommendation;
 
 interface RecommendationRepositoryInterface
 {
     /**
      * @param int $id
-     * @return RecommendationInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return Recommendation
+     * @throws NoSuchEntityException
      */
     public function getById($id);
 
     /**
-     * @param RecommendationInterface $recommendation
-     * @return RecommendationInterface
+     * @param Recommendation $recommendation
+     * @return Recommendation
      */
-    public function save(RecommendationInterface $recommendation);
+    public function save(Recommendation $recommendation);
 
     /**
-     * @param RecommendationInterface $recommendation
+     * @param Recommendation $recommendation
      * @return void
      */
-    public function delete(RecommendationInterface $recommendation);
+    public function delete(Recommendation $recommendation);
 }
