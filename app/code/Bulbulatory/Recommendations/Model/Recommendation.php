@@ -14,7 +14,7 @@ class Recommendation extends AbstractModel implements IdentityInterface
 
     protected function _construct()
     {
-        $this->_init(\Bulbulatory\Recommendations\Model\ResourceModel\Recommendation::class);
+        $this->_init(ResourceModel\Recommendation::class);
     }
 
     public function getIdentities()
