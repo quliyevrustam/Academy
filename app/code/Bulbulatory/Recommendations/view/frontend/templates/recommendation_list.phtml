@@ -1,0 +1,66 @@
+<?php $recommendations = $this->getCustomCollection(); ?>
+<?php if ($recommendations && sizeof($recommendations)): ?>
+
+    <div class="table-wrapper orders-history">
+
+        <table class="data table table-order-items history" id="my-orders-table">
+            <caption class="table-caption"><?php echo __('Recommendation Counters') ?></caption>
+            <thead>
+            <tr>
+                <th scope="col" class="col id"><?php echo __('All Recommendations') ?></th>
+                <th scope="col" class="col id"><?php echo __('Confirmed Recommendation') ?></th>
+                <th scope="col" class="col id"><?php echo __('Discount Percent') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+            <td style="font-weight: bold" data-th="<?= $this->escapeHtml(__('All Recommendations')) ?>" class="col id">
+                <?php echo $this->countAllRecommendation ?> </td>
+
+            <td style="font-weight: bold" data-th="<?= $this->escapeHtml(__('Confirmed Recommendations')) ?>" class="col id">
+                <?php echo $this->countConfirmedRecommendation ?> </td>
+
+            <td style="font-weight: bold" data-th="<?= $this->escapeHtml(__('Discount Percent')) ?>" class="col id">
+                <?php echo $this->discountPercent ?>% </td>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-wrapper orders-history">
+        <table class="data table table-order-items history" id="my-orders-table">
+             
+            <caption class="table-caption"><?php echo __('Recommendation') ?></caption>
+             
+            <thead>
+            <tr>
+                <th scope="col" class="col id"><?php echo __('ID') ?></th>
+                <th scope="col" class="col title"><?php echo __('Send At') ?></th>
+                <th scope="col" class="col email"><?php echo __('Email') ?></th>
+                <th scope="col" class="col state"><?php echo __('State') ?></th>
+            </tr>
+            </thead>
+             
+            <tbody>
+            <?php foreach ($recommendations as $recommendation): ?>
+                <tr>
+                    <td data-th="<?= $this->escapeHtml(__('ID')) ?>" class="col id">
+                        <?php echo $recommendation->getId() ?> </td>
+                     
+                    <td data-th="<?= $this->escapeHtml(__('Send At')) ?>" class="col title">
+                        <?php echo $recommendation->getCreatedAt(); ?></td>
+                     
+                    <td data-th="<?= $this->escapeHtml(__('Email')) ?>" class="col email">
+                        <?php echo $recommendation->getEmail() ?></td>
+                     
+                    <td data-th="<?= $this->escapeHtml(__('State')) ?>" class="col state">
+                    <?php echo $this->getStateName($recommendation->getState()) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php if ($this->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?php echo $this->getPagerHtml(); ?></div>
+    <?php endif ?>
+<?php else: ?> 
+    <div class="message info empty"><span><?php echo __('No any record.'); ?></span></div>
+<?php endif ?>

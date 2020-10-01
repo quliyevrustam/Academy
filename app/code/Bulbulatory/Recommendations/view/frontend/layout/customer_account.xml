@@ -4,7 +4,7 @@
             <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-custom">
                 <arguments>
                     <argument name="path" xsi:type="string">bulbulatory_recommendations/customer/recommendation</argument>
-                    <argument name="label" xsi:type="string">Recommendation</argument>
+                    <argument name="label" xsi:type="string">Recommendations</argument>
                 </arguments>
             </block>
         </referenceBlock>

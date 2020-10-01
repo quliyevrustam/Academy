@@ -3,12 +3,12 @@
     <body>
         <referenceBlock name="page.main.title">
             <action method="setPageTitle">
-                <argument translate="true" name="title" xsi:type="string">Recommendation</argument>
+                <argument translate="true" name="title" xsi:type="string">Recommendations</argument>
             </action>
         </referenceBlock>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="recommendation" template="Bulbulatory_Recommendations::recommendation.phtml">
-            </block>
+            <block class="Magento\Framework\View\Element\Template" name="recommendation" template="Bulbulatory_Recommendations::recommendation.phtml"></block>
+            <block class="Bulbulatory\Recommendations\Block\RecommendationList" name="recommendation_list" template="Bulbulatory_Recommendations::recommendation_list.phtml"  cacheable="false"/>
         </referenceContainer>
     </body>
 </page>

@@ -117,7 +117,7 @@ class SendRecommendation extends Action
      */
     private function saveRecommendation(): void
     {
-        // Get Customer Id fron Session
+        // Get Customer Id from Session
         $customerId = $this->customerSession->getCustomer()->getId();
 
         $data = [
