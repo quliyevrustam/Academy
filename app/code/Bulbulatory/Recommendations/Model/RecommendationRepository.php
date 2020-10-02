@@ -3,6 +3,7 @@
 namespace Bulbulatory\Recommendations\Model;
 
 use Exception;
+use http\Exception\InvalidArgumentException;
 use Throwable;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -12,9 +13,6 @@ use Magento\Framework\Math\Random;
 
 class RecommendationRepository implements RecommendationRepositoryInterface
 {
-    const STATE_UNCONFIRMED = 0;
-    const STATE_CONFIRMED   = 1;
-
     /**
      * @var RecommendationFactory
      */
@@ -55,7 +53,8 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         $recommendation = $this->recommendationFactory->create();
         $recommendation->getResource()->load($recommendation, $id);
 
-        if (! $recommendation->getId()) {
+        if(!$recommendation->getId())
+        {
             throw new NoSuchEntityException(__('Unable to find recommendation with ID "%1"', $id));
         }
 
@@ -71,7 +70,8 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         $recommendation = $this->recommendationFactory->create();
         $recommendation->load($email, 'email');
 
-        if (! $recommendation->getId()) {
+        if(!$recommendation->getId())
+        {
             throw new NoSuchEntityException(__('Unable to find recommendation with email "%1"', $email));
         }
 
@@ -87,7 +87,8 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         $recommendation = $this->recommendationFactory->create();
         $recommendation->load($hash, 'hash');
 
-        if (! $recommendation->getId()) {
+        if(!$recommendation->getId())
+        {
             throw new NoSuchEntityException(__('Unable to find recommendation with hash "%1"', $hash));
         }
 
@@ -121,8 +122,15 @@ class RecommendationRepository implements RecommendationRepositoryInterface
     public function create(array $data)
     {
         // Validate data for create Recommendation
-        if(empty($data['customer_id'])) throw new Exception(__('Customer Id is empty!'));
-        if(empty($data['email'])) throw new Exception(__('Email is empty!'));
+        if(empty($data['customer_id']))
+        {
+            throw new \InvalidArgumentException(__('Customer Id is empty!'));
+        }
+
+        if(empty($data['email']))
+        {
+            throw new \InvalidArgumentException(__('Email is empty!'));
+        }
 
         // Check Recommendation by email.
         // If Email exist - return Error
@@ -130,11 +138,17 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         try {
             $recommendation = $this->getByEmail($data['email']);
 
-            if($recommendation instanceof Recommendation) throw new Exception(__('Recommendation already send!'));
+            if($recommendation instanceof Recommendation)
+            {
+                throw new \InvalidArgumentException(__('Recommendation already send!'));
+            }
         }
         catch (Throwable $exception)
         {
-            if(!($exception instanceof NoSuchEntityException)) throw $exception;
+            if(!($exception instanceof NoSuchEntityException))
+            {
+                throw $exception;
+            }
         }
 
         $data['hash'] = $this->generateHash();
@@ -143,7 +157,8 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         $recommendation->setData($data);
         $recommendation->getResource()->save($recommendation);
 
-        if (! $recommendation->getId()) {
+        if(!$recommendation->getId())
+        {
             throw new NoSuchEntityException(__('Recommendation not save to Data Base'));
         }
 
@@ -168,10 +183,12 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         $recommendation = $this->getByHash($hash);
 
         // Check State
-        if($recommendation->getState() == self::STATE_CONFIRMED)
-            throw new Exception(__('Recommendation already confirmed!'));
+        if($recommendation->getState() == Recommendation::STATE_CONFIRMED)
+        {
+            throw new \InvalidArgumentException(__('Recommendation already confirmed!'));
+        }
 
-        $recommendation->setState(self::STATE_CONFIRMED);
+        $recommendation->setState(Recommendation::STATE_CONFIRMED);
         $recommendation->setConfirmationAt(date('Y-m-d H:i:s'));
         $recommendation->getResource()->save($recommendation);
     }

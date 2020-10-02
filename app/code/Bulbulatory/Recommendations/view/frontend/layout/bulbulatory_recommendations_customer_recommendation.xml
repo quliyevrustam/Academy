@@ -7,8 +7,8 @@
             </action>
         </referenceBlock>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="recommendation" template="Bulbulatory_Recommendations::recommendation.phtml"></block>
-            <block class="Bulbulatory\Recommendations\Block\RecommendationList" name="recommendation_list" template="Bulbulatory_Recommendations::recommendation_list.phtml"  cacheable="false"/>
+            <block class="Magento\Framework\View\Element\Template" name="recommendation" template="Bulbulatory_Recommendations::recommendation.phtml" ifconfig="recommendations/general/enable"></block>
+            <block class="Bulbulatory\Recommendations\Block\RecommendationList" name="recommendation_list" template="Bulbulatory_Recommendations::recommendation_list.phtml"  cacheable="false" ifconfig="recommendations/general/enable"/>
         </referenceContainer>
     </body>
 </page>

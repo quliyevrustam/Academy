@@ -25,11 +25,6 @@ class RecommendationList extends Template
     protected $customCollection;
 
     /**
-     * @var Session
-     */
-    private $customerSession;
-
-    /**
      * @var
      */
     public $countAllRecommendation;
@@ -71,7 +66,7 @@ class RecommendationList extends Template
     {
         parent::_prepareLayout();
 
-        if ($this->getCustomCollection())
+        if($this->getCustomCollection())
         {
             $pager = $this->getLayout()->createBlock(
                 'Magento\Theme\Block\Html\Pager',
@@ -121,7 +116,7 @@ class RecommendationList extends Template
         $this->countConfirmedRecommendation =
             $this->customCollection->getCollection()->
             addFieldToFilter('customer_id', [$this->customerId])->
-            addFieldToFilter('state', [RecommendationRepository::STATE_CONFIRMED])->count();
+            addFieldToFilter('state', [Recommendation::STATE_CONFIRMED])->count();
 
         $this->discountPercent = intdiv( $this->countConfirmedRecommendation, 10 ) * 5;
     }

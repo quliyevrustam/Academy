@@ -1,5 +1,5 @@
 <?php $recommendations = $this->getCustomCollection(); ?>
-<?php if ($recommendations && sizeof($recommendations)): ?>
+<?php if($recommendations && sizeof($recommendations)): ?>
 
     <div class="table-wrapper orders-history">
 
@@ -58,7 +58,7 @@
             </tbody>
         </table>
     </div>
-    <?php if ($this->getPagerHtml()): ?>
+    <?php if($this->getPagerHtml()): ?>
         <div class="order-products-toolbar toolbar bottom"><?php echo $this->getPagerHtml(); ?></div>
     <?php endif ?>
 <?php else: ?> 

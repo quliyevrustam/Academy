@@ -2,25 +2,19 @@
 
 namespace Bulbulatory\Recommendations\Helper;
 
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\Helper\AbstractHelper;
 
 /**
  * Custom Module Email Helper
  */
 class Email extends AbstractHelper
 {
-    const XML_PATH_EMAIL_TEMPLATE_FIELD  = 'recommendations/general/recommendation_email';
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    protected $_scopeConfig;
-
     /**
      * Store manager
      *
@@ -44,58 +38,41 @@ class Email extends AbstractHelper
     protected $temp_id;
 
     /**
+     * @var Config
+     */
+    private $configHelper;
+
+    /**
      * @param Context $context
      * @param StoreManagerInterface $storeManager
      * @param StateInterface $inlineTranslation
      * @param TransportBuilder $transportBuilder
+     * @param Config $configHelper
      */
     public function __construct(
         Context $context,
         StoreManagerInterface $storeManager,
         StateInterface $inlineTranslation,
-        TransportBuilder $transportBuilder
+        TransportBuilder $transportBuilder,
+        Config $configHelper
     ) {
-        $this->_scopeConfig = $context;
         parent::__construct($context);
+
         $this->_storeManager = $storeManager;
         $this->inlineTranslation = $inlineTranslation;
         $this->_transportBuilder = $transportBuilder;
-    }
-
-    /**
-     * Return store configuration value of your template field that which id you set for template
-     *
-     * @param string $path
-     * @param int $storeId
-     * @return mixed
-     */
-    protected function getConfigValue($path, $storeId)
-    {
-        return $this->scopeConfig->getValue(
-            $path,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-
-    /**
-     * Return store
-     *
-     * @return Store
-     */
-    public function getStore()
-    {
-        return $this->_storeManager->getStore();
+        $this->configHelper = $configHelper;
     }
 
     /**
      * Return template id according to store
      *
+     * @param $xmlPath
      * @return mixed
      */
     public function getTemplateId($xmlPath)
     {
-        return $this->getConfigValue($xmlPath, $this->getStore()->getStoreId());
+        return $this->configHelper->getConfigValue($xmlPath);
     }
 
     /**
@@ -110,8 +87,7 @@ class Email extends AbstractHelper
         $this->_transportBuilder->setTemplateIdentifier($this->temp_id)
             ->setTemplateOptions(
                 [
-                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND, /* here you can defile area and
-                                                                                 store of template for which you prepare it */
+                    'area' => Area::AREA_FRONTEND, /* here you can defile area and store of template for which you prepare it */
                     'store' => $this->_storeManager->getStore()->getId(),
                 ]
             )
@@ -123,14 +99,15 @@ class Email extends AbstractHelper
 
     /**
      * [sendInvoicedOrderEmail description]
-     * @param  Mixed $emailTemplateVariables
-     * @param  Mixed $senderInfo
-     * @param  Mixed $receiverInfo
+     * @param string $emailTemplate
+     * @param Mixed $emailTemplateVariables
+     * @param Mixed $senderInfo
+     * @param Mixed $receiverInfo
      * @return void
      */
-    public function sendMail($emailTemplateVariables, $senderInfo, $receiverInfo)
+    public function sendMail(string $emailTemplate, $emailTemplateVariables, $senderInfo, $receiverInfo)
     {
-        $this->temp_id = $this->getTemplateId(self::XML_PATH_EMAIL_TEMPLATE_FIELD);
+        $this->temp_id = $this->getTemplateId($emailTemplate);
         $this->inlineTranslation->suspend();
         $this->generateTemplate($emailTemplateVariables,$senderInfo,$receiverInfo);
         $transport = $this->_transportBuilder->getTransport();
