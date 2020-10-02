@@ -29,9 +29,9 @@ class InsertRecommendations implements DataPatchInterface
             ['customer_id' => 1, 'email' => 'test_one@test_one.com', 'hash' => 'A9F70FD94A58F18F47CEFC296B2E919B3F12'],
             ['customer_id' => 2, 'email' => 'test_two@test_two.com', 'hash' => '5A6A9D5E04C3FCCC721C017106016C1E3D5D']
         ];
-        foreach ($data as $bind) {
-            $setup->getConnection()
-                ->insertForce($setup->getTable('bulbulatory_recommendations'), $bind);
+        foreach ($data as $bind)
+        {
+            $setup->getConnection()->insertForce($setup->getTable('bulbulatory_recommendations'), $bind);
         }
 
         $this->moduleDataSetup->endSetup();

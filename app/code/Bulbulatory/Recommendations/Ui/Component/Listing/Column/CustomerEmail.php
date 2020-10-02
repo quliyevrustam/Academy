@@ -59,7 +59,7 @@ class CustomerEmail extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
-        if (isset($dataSource['data']['items']))
+        if(isset($dataSource['data']['items']))
         {
             foreach ($dataSource['data']['items'] as & $item)
             {

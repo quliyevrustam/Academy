@@ -2,6 +2,7 @@
 
 namespace Bulbulatory\Recommendations\Controller\Customer;
 
+use Bulbulatory\Recommendations\Helper\Acl;
 use Exception;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
@@ -24,24 +25,30 @@ class ConfirmRecommendation extends Action
      * @var
      */
     private $hash;
+    /**
+     * @var Acl
+     */
+    private $aclHelper;
 
     /**
      * ConfirmRecommendation constructor.
      * @param Context $context
      * @param RecommendationRepository $recommendationRepository
      * @param LoggerInterface $logger
+     * @param Acl $aclHelper
      */
     public function __construct(
         Context $context,
         RecommendationRepository $recommendationRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Acl $aclHelper
     )
     {
-        $this->recommendationsRepository = $recommendationRepository;
-
-        $this->logger = $logger;
-
         parent::__construct($context);
+
+        $this->recommendationsRepository = $recommendationRepository;
+        $this->logger = $logger;
+        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -49,6 +56,12 @@ class ConfirmRecommendation extends Action
      */
     public function execute()
     {
+        if(!$this->aclHelper->recommendationModuleAccess())
+        {
+            $this->messageManager->addErrorMessage(__('You have not access for confirm recommendation!'));
+            return $this->resultRedirectFactory->create()->setPath('/');
+        }
+
         try {
             $this->validateHash();
             $this->recommendationsRepository->confirm($this->hash);
@@ -56,7 +69,14 @@ class ConfirmRecommendation extends Action
         }
         catch (\Throwable $exception)
         {
-            $this->messageManager->addErrorMessage(__($exception->getMessage()));
+            if($exception instanceof \InvalidArgumentException)
+            {
+                $this->messageManager->addErrorMessage(__($exception->getMessage()));
+            }
+            else{
+                $this->messageManager->addErrorMessage(__('There was an error while trying to confirm recommendation!'));
+            }
+
             $this->logger->error($exception->getMessage(), ['exception' => $exception]);
         }
 
@@ -70,10 +90,14 @@ class ConfirmRecommendation extends Action
     private function validateHash()
     {
         if(empty($this->getRequest()->getParam('hash')))
-            throw new Exception(__('Empty hash!'));
+        {
+            throw new \InvalidArgumentException(__('Empty hash!'));
+        }
 
         if(!preg_match('/^[a-zA-Z0-9]+$/', $this->getRequest()->getParam('hash')))
-            throw new Exception(__('Wrong hash!'));
+        {
+            throw new \InvalidArgumentException(__('Wrong hash!'));
+        }
 
         $this->hash = $this->getRequest()->getParam('hash');
     }

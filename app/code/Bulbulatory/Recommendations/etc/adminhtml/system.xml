@@ -15,7 +15,7 @@
                     <label>Recommendations Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="recommendation_email" translate="Recommendation Email template" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="recommendation_email" translate="Recommendation Email Template" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Recommendation Email template</label>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>

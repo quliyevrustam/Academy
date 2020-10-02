@@ -56,7 +56,7 @@ class Delete extends Action
     {
         $resultRedirect = $this->resultRedirectFactory->create();
 
-        if ($id = $this->getRequest()->getParam('id'))
+        if($id = $this->getRequest()->getParam('id'))
         {
             try {
                 $recommendation = $this->recommendationRepository->getById($id);

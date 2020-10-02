@@ -2,7 +2,10 @@
 
 namespace Bulbulatory\Recommendations\Controller\Customer;
 
+use Bulbulatory\Recommendations\Exception\RecommendationException;
+use Bulbulatory\Recommendations\Helper\Acl;
 use Exception;
+use http\Exception\InvalidArgumentException;
 use Throwable;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -13,6 +16,8 @@ use Bulbulatory\Recommendations\Helper\Email;
 
 class SendRecommendation extends Action
 {
+    const EMAIL_TEMPLATE  = 'recommendations/general/recommendation_email';
+
     /**
      * @var RecommendationRepository
      */
@@ -42,6 +47,10 @@ class SendRecommendation extends Action
      * @var Email
      */
     private $emailHelper;
+    /**
+     * @var Acl
+     */
+    private $aclHelper;
 
     /**
      * SendRecommendation constructor.
@@ -50,24 +59,24 @@ class SendRecommendation extends Action
      * @param LoggerInterface $logger
      * @param Session $customerSession
      * @param Email $emailHelper
+     * @param Acl $aclHelper
      */
     public function __construct(
         Context $context,
         RecommendationRepository $recommendationRepository,
         LoggerInterface $logger,
         Session $customerSession,
-        Email $emailHelper
+        Email $emailHelper,
+        Acl $aclHelper
     )
     {
-        $this->recommendationsRepository = $recommendationRepository;
-
-        $this->logger = $logger;
-
-        $this->customerSession = $customerSession;
-
-        $this->emailHelper = $emailHelper;
-
         parent::__construct($context);
+
+        $this->recommendationsRepository = $recommendationRepository;
+        $this->logger = $logger;
+        $this->customerSession = $customerSession;
+        $this->emailHelper = $emailHelper;
+        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -75,6 +84,12 @@ class SendRecommendation extends Action
      */
     public function execute()
     {
+        if(!$this->aclHelper->recommendationModuleAccess())
+        {
+            $this->messageManager->addErrorMessage(__('You have not access for send recommendation!'));
+            return $this->resultRedirectFactory->create()->setPath('/');
+        }
+
         try {
             $this->setEmail($this->getRequest()->getParam('email'));
             $this->saveRecommendation();
@@ -84,7 +99,14 @@ class SendRecommendation extends Action
         }
         catch (Throwable $exception)
         {
-            $this->messageManager->addErrorMessage(__($exception->getMessage()));
+            if($exception instanceof \InvalidArgumentException)
+            {
+                $this->messageManager->addErrorMessage(__($exception->getMessage()));
+            }
+            else{
+                $this->messageManager->addErrorMessage(__('There was an error while trying to send recommendation!'));
+            }
+
             $this->logger->error($exception->getMessage(), ['exception' => $exception]);
         }
 
@@ -99,9 +121,9 @@ class SendRecommendation extends Action
     private function setEmail(string $email): void
     {
         // Validate Email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL))
         {
-            throw new Exception(__('Wrong email: "%1"', $email));
+            throw new \InvalidArgumentException(__('Wrong email: "%1"', $email));
         }
         else
         {
@@ -117,7 +139,7 @@ class SendRecommendation extends Action
      */
     private function saveRecommendation(): void
     {
-        // Get Customer Id fron Session
+        // Get Customer Id from Session
         $customerId = $this->customerSession->getCustomer()->getId();
 
         $data = [
@@ -149,6 +171,6 @@ class SendRecommendation extends Action
             'hash' => $this->hash
         ];
 
-        $this->emailHelper->sendMail($templateVars, $senderInfo, $receiverInfo);
+        $this->emailHelper->sendMail(self::EMAIL_TEMPLATE, $templateVars, $senderInfo, $receiverInfo);
     }
 }

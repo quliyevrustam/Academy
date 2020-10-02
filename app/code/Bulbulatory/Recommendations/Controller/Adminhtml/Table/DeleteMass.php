@@ -93,11 +93,15 @@ class DeleteMass extends Action
             }
         }
 
-        if (count($successfulDeleteIds) > 0)
+        if(count($successfulDeleteIds) > 0)
+        {
             $this->messageManager->addSuccessMessage(__(count($successfulDeleteIds).' recommendations with ID: ' . implode(',', $successfulDeleteIds) . ' deleted!'));
+        }
 
-        if (count($failedDeleteIds) > 0)
+        if(count($failedDeleteIds) > 0)
+        {
             $this->messageManager->addErrorMessage(__(count($failedDeleteIds).' recommendations with ID: ' . implode(',', $failedDeleteIds) . ' failed to delete!'));
+        }
 
         return $resultRedirect->setPath('bulbulatory_recommendations/table/index');
     }
