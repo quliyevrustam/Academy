@@ -2,14 +2,14 @@
 
 namespace Bulbulatory\Recommendations\Controller\Customer;
 
-use Bulbulatory\Recommendations\Helper\Acl;
 use Exception;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
 use Bulbulatory\Recommendations\Model\RecommendationRepository;
 use Psr\Log\LoggerInterface;
+use Bulbulatory\Recommendations\Helper\Config;
 
-class ConfirmRecommendation extends Action
+class ConfirmRecommendation extends RecommendationAbstract
 {
     /**
      * @var RecommendationRepository
@@ -25,30 +25,25 @@ class ConfirmRecommendation extends Action
      * @var
      */
     private $hash;
-    /**
-     * @var Acl
-     */
-    private $aclHelper;
 
     /**
      * ConfirmRecommendation constructor.
      * @param Context $context
      * @param RecommendationRepository $recommendationRepository
      * @param LoggerInterface $logger
-     * @param Acl $aclHelper
+     * @param Config $configHelper
      */
     public function __construct(
         Context $context,
         RecommendationRepository $recommendationRepository,
         LoggerInterface $logger,
-        Acl $aclHelper
+        Config $configHelper
     )
     {
-        parent::__construct($context);
+        parent::__construct($context, $configHelper);
 
         $this->recommendationsRepository = $recommendationRepository;
         $this->logger = $logger;
-        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -56,12 +51,6 @@ class ConfirmRecommendation extends Action
      */
     public function execute()
     {
-        if(!$this->aclHelper->recommendationModuleAccess())
-        {
-            $this->messageManager->addErrorMessage(__('You have not access for confirm recommendation!'));
-            return $this->resultRedirectFactory->create()->setPath('/');
-        }
-
         try {
             $this->validateHash();
             $this->recommendationsRepository->confirm($this->hash);

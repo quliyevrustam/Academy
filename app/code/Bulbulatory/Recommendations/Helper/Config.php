@@ -6,9 +6,15 @@ use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class Config extends AbstractHelper
 {
+    /**
+     * Template for recommendation email that Customer send to his friend
+     */
+    const RECOMMENDATION_EMAIL_TEMPLATE  = 'recommendations/general/recommendation_email';
+
     /**
      * Store manager
      *
@@ -17,16 +23,24 @@ class Config extends AbstractHelper
     protected $_storeManager;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Config constructor.
      * @param Context $context
      * @param StoreManagerInterface $storeManager
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Context $context,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->_storeManager = $storeManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -42,5 +56,30 @@ class Config extends AbstractHelper
             ScopeInterface::SCOPE_STORE,
             $this->_storeManager->getStore()->getStoreId()
         );
+    }
+
+    /**
+     * @return bool
+     */
+    public function isModuleEnabled(): bool
+    {
+        $recommendationModuleAccess = false;
+        try {
+            $recommendationModuleAccess = (bool) $this->getConfigValue('recommendations/general/enable');
+        }
+        catch (\Throwable $exception)
+        {
+            $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+        }
+
+        return $recommendationModuleAccess;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecommendationMailTemplateId()
+    {
+        return $this->getConfigValue(self::RECOMMENDATION_EMAIL_TEMPLATE);
     }
 }

@@ -52,7 +52,7 @@
                         <?php echo $recommendation->getEmail() ?></td>
                      
                     <td data-th="<?= $this->escapeHtml(__('State')) ?>" class="col state">
-                    <?php echo $this->getStateName($recommendation->getState()) ?></td>
+                        <?php echo $this->getStateName($recommendation->getState()) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

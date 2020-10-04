@@ -2,38 +2,32 @@
 
 namespace Bulbulatory\Recommendations\Controller\Customer;
 
-use Bulbulatory\Recommendations\Helper\Acl;
+use Bulbulatory\Recommendations\Helper\Config;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\Action\Action;
 
-class Recommendation extends Action
+class Recommendation extends RecommendationAbstract
 {
     /**
      * @var PageFactory
      */
     protected $resultPageFactory;
-    /**
-     * @var Acl
-     */
-    private $aclHelper;
 
     /**
      * Recommendation constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
-     * @param Acl $aclHeler
+     * @param Config $configHelper
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        Acl $aclHeler
+        Config $configHelper
     )
     {
-
-        parent::__construct($context);
+        parent::__construct($context, $configHelper);
         $this->resultPageFactory = $resultPageFactory;
-        $this->aclHelper = $aclHeler;
     }
 
     /**
@@ -41,12 +35,6 @@ class Recommendation extends Action
      */
     public function execute()
     {
-        if(!$this->aclHelper->recommendationModuleAccess())
-        {
-            $this->messageManager->addErrorMessage(__('You have not access for Recommendations!'));
-            return $this->resultRedirectFactory->create()->setPath('/');
-        }
-
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->set(__('Recommendations'));
         return $resultPage;

@@ -3,9 +3,7 @@
 namespace Bulbulatory\Recommendations\Controller\Customer;
 
 use Bulbulatory\Recommendations\Exception\RecommendationException;
-use Bulbulatory\Recommendations\Helper\Acl;
 use Exception;
-use http\Exception\InvalidArgumentException;
 use Throwable;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -13,11 +11,10 @@ use Bulbulatory\Recommendations\Model\RecommendationRepository;
 use Psr\Log\LoggerInterface;
 use Magento\Customer\Model\Session;
 use Bulbulatory\Recommendations\Helper\Email;
+use Bulbulatory\Recommendations\Helper\Config;
 
-class SendRecommendation extends Action
+class SendRecommendation extends RecommendationAbstract
 {
-    const EMAIL_TEMPLATE  = 'recommendations/general/recommendation_email';
-
     /**
      * @var RecommendationRepository
      */
@@ -47,10 +44,6 @@ class SendRecommendation extends Action
      * @var Email
      */
     private $emailHelper;
-    /**
-     * @var Acl
-     */
-    private $aclHelper;
 
     /**
      * SendRecommendation constructor.
@@ -59,7 +52,7 @@ class SendRecommendation extends Action
      * @param LoggerInterface $logger
      * @param Session $customerSession
      * @param Email $emailHelper
-     * @param Acl $aclHelper
+     * @param Config $configHelper
      */
     public function __construct(
         Context $context,
@@ -67,16 +60,15 @@ class SendRecommendation extends Action
         LoggerInterface $logger,
         Session $customerSession,
         Email $emailHelper,
-        Acl $aclHelper
+        Config $configHelper
     )
     {
-        parent::__construct($context);
+        parent::__construct($context, $configHelper);
 
         $this->recommendationsRepository = $recommendationRepository;
         $this->logger = $logger;
         $this->customerSession = $customerSession;
         $this->emailHelper = $emailHelper;
-        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -84,12 +76,6 @@ class SendRecommendation extends Action
      */
     public function execute()
     {
-        if(!$this->aclHelper->recommendationModuleAccess())
-        {
-            $this->messageManager->addErrorMessage(__('You have not access for send recommendation!'));
-            return $this->resultRedirectFactory->create()->setPath('/');
-        }
-
         try {
             $this->setEmail($this->getRequest()->getParam('email'));
             $this->saveRecommendation();
@@ -171,6 +157,6 @@ class SendRecommendation extends Action
             'hash' => $this->hash
         ];
 
-        $this->emailHelper->sendMail(self::EMAIL_TEMPLATE, $templateVars, $senderInfo, $receiverInfo);
+        $this->emailHelper->sendRecommendationMail($templateVars, $senderInfo, $receiverInfo);
     }
 }
