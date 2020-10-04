@@ -10,6 +10,9 @@ use Psr\Log\LoggerInterface;
 
 class Config extends AbstractHelper
 {
+    /**
+     * Template for recommendation email that Customer send to his friend
+     */
     const RECOMMENDATION_EMAIL_TEMPLATE  = 'recommendations/general/recommendation_email';
 
     /**
@@ -72,6 +75,9 @@ class Config extends AbstractHelper
         return $recommendationModuleAccess;
     }
 
+    /**
+     * @return mixed
+     */
     public function getRecommendationMailTemplateId()
     {
         return $this->getConfigValue(self::RECOMMENDATION_EMAIL_TEMPLATE);

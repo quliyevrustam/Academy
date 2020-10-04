@@ -192,4 +192,15 @@ class RecommendationRepository implements RecommendationRepositoryInterface
         $recommendation->setConfirmationAt(date('Y-m-d H:i:s'));
         $recommendation->getResource()->save($recommendation);
     }
+
+    /**
+     * @return array|string[]
+     */
+    public static function getStateTypes(): array
+    {
+        return [
+            0 => 'Unconfirmed',
+            1 => 'Confirmed'
+        ];
+    }
 }
