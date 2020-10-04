@@ -28,12 +28,12 @@
     <div class="table-wrapper orders-history">
         <table class="data table table-order-items history" id="my-orders-table">
              
-            <caption class="table-caption"><?php echo __('Recommendation') ?></caption>
+            <caption class="table-caption"><?php echo __('Recommendations') ?></caption>
              
             <thead>
             <tr>
                 <th scope="col" class="col id"><?php echo __('ID') ?></th>
-                <th scope="col" class="col title"><?php echo __('Send At') ?></th>
+                <th scope="col" class="col title"><?php echo __('Send Date') ?></th>
                 <th scope="col" class="col email"><?php echo __('Email') ?></th>
                 <th scope="col" class="col state"><?php echo __('State') ?></th>
             </tr>
@@ -45,7 +45,7 @@
                     <td data-th="<?= $this->escapeHtml(__('ID')) ?>" class="col id">
                         <?php echo $recommendation->getId() ?> </td>
                      
-                    <td data-th="<?= $this->escapeHtml(__('Send At')) ?>" class="col title">
+                    <td data-th="<?= $this->escapeHtml(__('Send Date')) ?>" class="col title">
                         <?php echo $recommendation->getCreatedAt(); ?></td>
                      
                     <td data-th="<?= $this->escapeHtml(__('Email')) ?>" class="col email">
