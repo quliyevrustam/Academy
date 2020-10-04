@@ -26,4 +26,16 @@ interface RecommendationRepositoryInterface
      * @return void
      */
     public function delete(Recommendation $recommendation);
+
+    /**
+     * @param array $data
+     * @return integer
+     */
+    public function create(array $data);
+
+    /**
+     * @param string $hash
+     * @return void
+     */
+    public function confirm(string $hash);
 }

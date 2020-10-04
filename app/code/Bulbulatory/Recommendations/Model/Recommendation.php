@@ -7,6 +7,9 @@ use Magento\Framework\Model\AbstractModel;
 
 class Recommendation extends AbstractModel implements IdentityInterface
 {
+    const STATE_UNCONFIRMED = 0;
+    const STATE_CONFIRMED   = 1;
+
     const CACHE_TAG = 'bulbulatory_recommendations_table';
 
     protected $_cacheTag = 'bulbulatory_recommendations_table';
