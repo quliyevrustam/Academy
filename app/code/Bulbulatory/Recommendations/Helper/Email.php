@@ -65,17 +65,6 @@ class Email extends AbstractHelper
     }
 
     /**
-     * Return template id according to store
-     *
-     * @param $xmlPath
-     * @return mixed
-     */
-    public function getTemplateId($xmlPath)
-    {
-        return $this->configHelper->getConfigValue($xmlPath);
-    }
-
-    /**
      * [generateTemplate description]  with template file and tempaltes variables values
      * @param Mixed $emailTemplateVariables
      * @param Mixed $senderInfo
@@ -99,15 +88,14 @@ class Email extends AbstractHelper
 
     /**
      * [sendInvoicedOrderEmail description]
-     * @param string $emailTemplate
      * @param Mixed $emailTemplateVariables
      * @param Mixed $senderInfo
      * @param Mixed $receiverInfo
      * @return void
      */
-    public function sendMail(string $emailTemplate, $emailTemplateVariables, $senderInfo, $receiverInfo)
+    public function sendRecommendationMail($emailTemplateVariables, $senderInfo, $receiverInfo)
     {
-        $this->temp_id = $this->getTemplateId($emailTemplate);
+        $this->temp_id = $this->configHelper->getRecommendationMailTemplateId();
         $this->inlineTranslation->suspend();
         $this->generateTemplate($emailTemplateVariables,$senderInfo,$receiverInfo);
         $transport = $this->_transportBuilder->getTransport();
