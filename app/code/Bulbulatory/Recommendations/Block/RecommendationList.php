@@ -7,16 +7,11 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Bulbulatory\Recommendations\Model\Recommendation;
 use Magento\Customer\Model\Session;
+use Bulbulatory\Recommendations\Helper\Discount;
 
 class RecommendationList extends Template
 {
-    /**
-     *
-     */
     const DEFAULT_PAGE = 1;
-    /**
-     *
-     */
     const DEFAULT_LIMIT = 5;
 
     /**
@@ -28,31 +23,44 @@ class RecommendationList extends Template
      * @var
      */
     public $countAllRecommendation;
+
     /**
      * @var
      */
     public $countConfirmedRecommendation;
+
     /**
      * @var
      */
     public $discountPercent;
 
+    /**
+     * @var
+     */
     private $customerId;
+
+    /**
+     * @var Discount
+     */
+    private $discountHelper;
 
     /**
      * RecommendationList constructor.
      * @param Context $context
      * @param Recommendation $customCollection
      * @param Session $customerSession
+     * @param Discount $discountHelper
      */
     public function __construct(
         Context $context,
         Recommendation $customCollection,
-        Session $customerSession
+        Session $customerSession,
+        Discount $discountHelper
     )
     {
         $this->customCollection = $customCollection;
         $this->customerId = $customerSession->getCustomer()->getId();
+        $this->discountHelper = $discountHelper;
 
         $this->getCounters();
 
@@ -104,9 +112,6 @@ class RecommendationList extends Template
         return $collection->addFieldToFilter('customer_id', [$this->customerId]);
     }
 
-    /**
-     *
-     */
     private function getCounters(): void
     {
         $this->countAllRecommendation =
@@ -118,9 +123,13 @@ class RecommendationList extends Template
             addFieldToFilter('customer_id', [$this->customerId])->
             addFieldToFilter('state', [Recommendation::STATE_CONFIRMED])->count();
 
-        $this->discountPercent = intdiv( $this->countConfirmedRecommendation, 10 ) * 5;
+        $this->discountPercent = $this->discountHelper->getRecommendationDiscountPercent();
     }
 
+    /**
+     * @param int $state
+     * @return string
+     */
     public function getStateName(int $state): string
     {
         return RecommendationRepository::getStateTypes()[$state];
