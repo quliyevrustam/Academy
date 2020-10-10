@@ -67,6 +67,7 @@ class RecommendationDiscount extends AbstractTotal
     {
         parent::collect($quote, $shippingAssignment, $total);
 
+        // Check Recommendations Module Enable
         if($this->isModuleEnabled)
         {
             $baseDiscount = $this->discount * $total->getSubtotal();
@@ -74,7 +75,7 @@ class RecommendationDiscount extends AbstractTotal
             $total->addTotalAmount($this->getCode(), -$discount);
             $total->addBaseTotalAmount($this->getCode(), -$baseDiscount);
             $total->setBaseGrandTotal($total->getBaseGrandTotal() - $baseDiscount);
-            $quote->setCustomDiscount(-$discount);
+            $quote->setCustomRecommendationDiscount(-$discount);
         }
 
         return $this;
@@ -90,11 +91,19 @@ class RecommendationDiscount extends AbstractTotal
         Total $total
     )
     {
-        $discount = $this->discount * $total->getSubtotal();
-        return [
-            'code' => $this->getCode(),
-            'title' => $this->getLabel(),
-            'value' => -$discount
-        ];
+        $totals = null;
+
+        // Check Recommendations Module Enable
+        if ($this->isModuleEnabled)
+        {
+            $discount = $this->discount * $total->getSubtotal();
+            $totals = [
+                'code'  => $this->getCode(),
+                'title' => $this->getLabel(),
+                'value' => -$discount
+            ];
+        }
+
+        return $totals;
     }
 }

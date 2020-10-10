@@ -8,13 +8,13 @@
                         <item name="block-totals" xsi:type="array">
                             <item name="children" xsi:type="array">
                                 <!-- Start of the main content that needs to be added-->
-                                <item name="discount" xsi:type="array">
+                                <item name="custom_recommendation_discount" xsi:type="array">
                                     <!-- The path to our js file-->
                                     <item name="component" xsi:type="string">Bulbulatory_Recommendations/js/view/checkout/summary/discount-fee</item>
                                     <item name="sortOrder" xsi:type="string">20</item>
                                     <item name="config" xsi:type="array">
                                         <!-- Show custom discount on order summary-->
-                                        <item name="discount" xsi:type="string" translate="true">Recommendation Discount</item>
+                                        <item name="custom_recommendation_discount" xsi:type="string" translate="true">Recommendation Discount</item>
                                     </item>
                                 </item>
                                 <!--  End-->

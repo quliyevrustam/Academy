@@ -13,12 +13,12 @@
                                                 <item name="totals" xsi:type="array">
                                                     <item name="children" xsi:type="array">
                                                         <!--  Start of the main content that needs to be added-->
-                                                        <item name="discount" xsi:type="array">
+                                                        <item name="custom_recommendation_discount" xsi:type="array">
                                                             <!-- The path to our js file-->
-                                                            <item name="component" xsi:type="string">Bulbulatory_Recommendations/js/view/checkout/cart/totals/discount</item>
+                                                            <item name="component" xsi:type="string">Bulbulatory_Recommendations/js/view/checkout/summary/discount-fee</item>
                                                             <item name="sortOrder" xsi:type="string">20</item>
                                                             <item name="config" xsi:type="array">
-                                                                <item name="template" xsi:type="string">Bulbulatory_Recommendations/checkout/cart/totals/discount</item>
+                                                                <item name="template" xsi:type="string">Bulbulatory_Recommendations/checkout/summary/discount-fee</item>
                                                                 <!--  Show custom discount on order summary-->
                                                                 <item name="title" xsi:type="string" translate="true">Recommendation Discount</item>
                                                             </item>
